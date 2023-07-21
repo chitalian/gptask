@@ -21,11 +21,6 @@ Please only show me the output, no explanation.
     assistant_helper_prompt = f"""
 Sure I will just show you the output of the file here without a code block.
 """
-
-    print("HERE IS THE USER PROMPT")
-    print(user_prompt)
-    
-    openai.api_base = "https://oai.hconeai.com/v1"
     response = openai.ChatCompletion.create(
         model=model,
         messages=[
@@ -43,9 +38,6 @@ Sure I will just show you the output of the file here without a code block.
             }
         ],
         temperature=0.0,
-        headers= {
-            "Helicone-Auth": "Bearer sk-kly7vcq-y2sufzy-qfj2s5i-snc333y"
-        }
     )
     
     return response.choices[0].message.content
