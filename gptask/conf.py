@@ -1,10 +1,10 @@
 import os
 
 def load_prompts():
-    prompts = []
+    prompts = {}
     for filename in os.listdir(os.path.expanduser('~/.gptask/prompts')):
         with open(os.path.expanduser('~/.gptask/prompts/' + filename)) as f:
-            prompts.append(f.read())
+            prompts[filename] = f.read()
             
     return prompts
 
