@@ -7,19 +7,17 @@ system_prompt = "You are a helpful coding assistant who helps users with their c
 def init():
     openai.api_key = load_key()
 
-def run(prompt: str, file_name: str, file: str, model: str = "gpt-3.5-turbo-16k"):
+def run(prompt: str, file_name: str, file: str, model: str = "gpt-4"):
     if ('OPENAI_API_KEY' not in os.environ):
         init()
 
-    user_prompt = f"""Here are the contents of {file_name}
-```
-{file}
-```
-Using the contents above please following the following instructions: {prompt}
+    user_prompt = f"""{file}
+<------------------------------------>
+Using the contents above for {file_name} please following the following instructions: {prompt}
 Please only show me the output, no explanation.
 """
     assistant_helper_prompt = f"""
-Sure I will just show you the output with my modified changes to the file without a code block.
+Sure I will just show you the output with my modified changes.
 """
     response = openai.ChatCompletion.create(
         model=model,
