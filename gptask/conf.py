@@ -8,7 +8,11 @@ def setup():
     
     prompts_dir = os.path.expanduser('~/.gptask/prompts')
     if not os.path.exists(prompts_dir):
-        os.makedirs(prompts_dir)
+        # OS Copy example prompts from ./.gptask.example/prompts to ~/.gptask/prompts
+        import shutil
+        current_dir = os.path.dirname(os.path.realpath(__file__))
+        shutil.copytree(current_dir + '/.gptask.example/prompts', prompts_dir)
+
         
     # Check for key
     key_path = os.path.expanduser('~/.gptask/openai.key')
