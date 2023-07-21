@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "gptask"
+name = "gptask_cli"
 version = "0.1.0"
 description = ""
 authors = ["Calum Bird <calum@trelent.net>"]
