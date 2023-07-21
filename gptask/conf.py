@@ -1,5 +1,14 @@
 import os
 
+def ensure_dir():
+    base_dir = os.path.expanduser('~/.gptask')
+    if not os.path.exists(base_dir):
+        os.makedirs(base_dir)
+    
+    prompts_dir = os.path.expanduser('~/.gptask/prompts')
+    if not os.path.exists(prompts_dir):
+        os.makedirs(prompts_dir)
+
 def load_prompts():
     prompts = {}
     for filename in os.listdir(os.path.expanduser('~/.gptask/prompts')):

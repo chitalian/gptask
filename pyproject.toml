@@ -17,3 +17,4 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
 gptask = "gptask:main"
+run_gptask = "gptask:main"
