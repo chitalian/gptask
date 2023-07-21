@@ -23,7 +23,7 @@ def main(prompt, file):
     else:
         prompt_contents = all_prompts[prompt]
 
-    res = run(prompt_contents, file_contents)
+    res = run(prompt_contents, file.name, file_contents)
 
 
     click.echo(f"Prompt: {prompt}")

@@ -1,3 +1,4 @@
+import os
 import openai
 from gptask.conf import load_prompts, load_key
 
@@ -6,9 +7,25 @@ system_prompt = "You are a helpful coding assistant who helps users with their c
 def init():
     openai.api_key = load_key()
 
-def run(prompt: str, file: str, lang: str = "python", model: str = "gpt-3.5-turbo-16k"):
-    user_prompt = prompt + f"\n\n```{lang}\n{file}\n```"
+def run(prompt: str, file_name: str, file: str, model: str = "gpt-3.5-turbo-16k"):
+    if ('OPENAI_API_KEY' not in os.environ):
+        init()
+
+    user_prompt = f"""Here are the contents of {file_name}
+```
+{file}
+```
+Using the contents above please following the following instructions: {prompt}
+Please only show me the output, no explanation.
+"""
+    assistant_helper_prompt = f"""
+Sure I will just show you the output of the file here without a code block.
+"""
+
+    print("HERE IS THE USER PROMPT")
+    print(user_prompt)
     
+    openai.api_base = "https://oai.hconeai.com/v1"
     response = openai.ChatCompletion.create(
         model=model,
         messages=[
@@ -19,9 +36,16 @@ def run(prompt: str, file: str, lang: str = "python", model: str = "gpt-3.5-turb
             {
                 'role': 'user',
                 'content': user_prompt
+            },
+            {
+                'role': 'assistant',
+                'content': assistant_helper_prompt
             }
         ],
-        temperature=0.0
+        temperature=0.0,
+        headers= {
+            "Helicone-Auth": "Bearer sk-kly7vcq-y2sufzy-qfj2s5i-snc333y"
+        }
     )
     
     return response.choices[0].message.content
