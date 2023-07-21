@@ -8,7 +8,7 @@ from gptask.openai_gptask import run
 
 @click.command()
 @click.option('-p', '--prompt', help='Prompts in ~/.gptask/prompts')
-@click.option('-f', '--force', help='Bypass checking git status', type=bool, default=False)
+@click.option('-f', '--force', is_flag=True, help='Force execution even if conditions are not met')
 @click.argument('file', type=click.File('r'))
 def main(prompt, force, file):
     setup()

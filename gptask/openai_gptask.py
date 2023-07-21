@@ -19,7 +19,7 @@ Using the contents above please following the following instructions: {prompt}
 Please only show me the output, no explanation.
 """
     assistant_helper_prompt = f"""
-Sure I will just show you the output of the file here without a code block.
+Sure I will just show you the output with my modified changes to the file without a code block.
 """
     response = openai.ChatCompletion.create(
         model=model,
