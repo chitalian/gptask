@@ -18,9 +18,10 @@ def main(prompt, file):
         click.echo(f"Prompt {prompt} not found")
         return
     
-    prompt_contents = all_prompts[prompt]
-
-
+    if(".gptask" in prompt):
+        prompt_contents = all_prompts[prompt[:-7]]
+    else:
+        prompt_contents = all_prompts[prompt]
 
     res = run(prompt_contents, file_contents)
 

@@ -27,7 +27,7 @@ def load_prompts():
     prompts = {}
     for filename in os.listdir(os.path.expanduser('~/.gptask/prompts')):
         with open(os.path.expanduser('~/.gptask/prompts/' + filename)) as f:
-            prompts[filename] = f.read()
+            prompts[filename[:-7]] = f.read()
             
     return prompts
 
