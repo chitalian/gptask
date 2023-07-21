@@ -14,7 +14,7 @@ def setup():
     key_path = os.path.expanduser('~/.gptask/openai.key')
     if not os.path.exists(key_path):
         # Check if key is in env
-        if 'OPENAI_API_KEY' in os.environ and click.confirm('Found OpenAI API key in environment. Would you like to save it to ~/.gptask/openai.key? (Y/n)'):
+        if 'OPENAI_API_KEY' in os.environ and click.confirm('Found OpenAI API key in environment. Would you like to save it to ~/.gptask/openai.key?', default=True, show_default=True):
             with open(key_path, 'w') as f:
                 f.write(os.environ['OPENAI_API_KEY'])
         else:
