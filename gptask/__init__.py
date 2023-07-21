@@ -1,5 +1,5 @@
 import click
-from gptask.conf import ensure_dir, load_prompts
+from gptask.conf import setup, load_prompts
 from gptask.openai_gptask import run
 
 
@@ -8,7 +8,7 @@ from gptask.openai_gptask import run
 @click.option('-p', '--prompt', help='Prompts in ~/.gptask/prompts')
 @click.argument('file', type=click.File('r'))
 def main(prompt, file):
-    ensure_dir()
+    setup()
 
     file_contents = file.read()
 
