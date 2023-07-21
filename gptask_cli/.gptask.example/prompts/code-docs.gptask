@@ -1,0 +1,9 @@
+"Generate Code Comments": This prompt can generate comments for a given piece of code.
+
+"Create Markdown Documentation": This prompt can create a markdown documentation file for a given piece of software.
+
+"Generate Javadoc Comments": This prompt can generate Javadoc comments for a given Java class or method.
+
+"Create Software Usage Guide": This prompt helps create a user-friendly guide on how to use a given piece of software.
+
+"Create README": This prompt generates a README.md file for a software project, given its main features and functionalities.

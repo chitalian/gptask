@@ -1,9 +1,9 @@
 import click
 import os
 import glob
-from gptask.conf import setup, load_prompts
-from gptask.git_checker import is_staged
-from gptask.openai_gptask import run
+from gptask_cli.conf import setup, load_prompts
+from gptask_cli.git_checker import is_staged
+from gptask_cli.openai_gptask import run
 
 
 def check_file_staged_status(file, force):
@@ -50,13 +50,17 @@ def main(prompt, force, recursive, file):
 
     all_prompts = load_prompts()
     if prompt not in all_prompts:
-        click.echo(f"Prompt {prompt} not found")
+        if prompt is not None:
+            click.echo(f"Prompt {prompt} not found")
+        click.echo("Available prompts:")
+        for key in all_prompts.keys():
+            click.echo(f"  {key}")
         return
 
     prompt_contents = get_prompt_contents(prompt, all_prompts)
 
     for file in files_to_process:
-        click.echo(f"Formatting file: {file.name}")
+        click.echo(f"Using GPT-4 to format (This may take a while): {file.name}")
         file_contents = file.read()
         res = run(prompt_contents, file.name, file_contents)
         with open(file.name, 'w') as f:
