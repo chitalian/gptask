@@ -18,11 +18,11 @@ def is_git_repo():
 
 def any_changes(file: str):
     """
-    Checks if the file has any uncommited changes or unstaged changes
+    Checks if the file has any uncommitted changes or unstaged changes
     """
-    has_commited_changes = subprocess.call(['git', 'diff-index', '--quiet', 'HEAD', '--', file], stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL) == 1
-    has_unstaged_changes = subprocess.call(['git', 'diff-files', '--quiet', '--', file], stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL) == 1
-    has_cached_changes = subprocess.call(['git', 'diff-index', '--quiet', '--cached', 'HEAD', '--', file], stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL) == 1
-    return has_commited_changes or has_unstaged_changes or has_cached_changes
+    status = subprocess.check_output(['git', 'status', '--porcelain', file], text=True)
 
-
+    # If there are any changes, the status command will print out lines starting
+    # with 'M' (modified), 'A' (added), 'D' (deleted), etc.
+    # If there are no changes, status will be an empty string.
+    return bool(status.strip())
