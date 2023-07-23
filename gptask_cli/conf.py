@@ -28,11 +28,17 @@ def setup():
                 f.write(key)
 
 def load_prompts():
+    examples_dir = os.path.dirname(os.path.realpath(__file__)) + '/.gptask.example/prompts'
+    
     prompts = {}
     for filename in os.listdir(os.path.expanduser('~/.gptask/prompts')):
         with open(os.path.expanduser('~/.gptask/prompts/' + filename)) as f:
             prompts[filename[:-7]] = f.read()
             
+    for filename in os.listdir(examples_dir):
+        with open(examples_dir + '/' + filename) as f:
+            prompts[filename[:-7]] = f.read()
+
     return prompts
 
 def load_key():
