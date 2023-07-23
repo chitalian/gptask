@@ -1,7 +1,7 @@
 import click
 import os
 import glob
-from gptask_cli.conf import setup, load_prompts
+from gptask_cli.conf import run_reload_example_prompts, setup, load_prompts
 from gptask_cli.git_checker import is_staged
 from gptask_cli.openai_gptask import run
 
@@ -40,9 +40,14 @@ def _print_files(start_path):
 @click.option('-r', '--recursive', type=click.STRING, help='Directory with files to be processed')
 @click.option('-l', '--print-files', is_flag=True, help='Prints the files to be processed')
 @click.option('-a', '--print-prompts', is_flag=True, help='Prints all available prompts')
+@click.option('-g', '--reload-example-prompts', is_flag=True, help='Reloads example prompts')
 @click.argument('file', type=click.File('r'), required=False)
-def main(prompt, force, print_files, recursive, print_prompts, file):
+def main(prompt, force, print_files, recursive, print_prompts,reload_example_prompts, file):
+
     setup()
+    if reload_example_prompts:
+        run_reload_example_prompts()
+        return
     
     if print_files and recursive:
         _print_files(recursive)
