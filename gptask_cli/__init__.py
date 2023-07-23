@@ -30,11 +30,16 @@ def get_prompt_contents(prompt, all_prompts):
 
 
 @click.command()
+@click.option('-v', '--version', is_flag=True, help='Prints the version of gptask')
 @click.option('-p', '--prompt', help='Prompts in ~/.gptask/prompts')
 @click.option('-f', '--force', is_flag=True, help='Force execution even if conditions are not met')
 @click.option('-r', '--recursive', type=click.STRING, help='Directory with files to be processed')
 @click.argument('file', type=click.File('r'), required=False)
-def main(prompt, force, recursive, file):
+def main(version, prompt, force, recursive, file):
+    if version:
+        from gptask_cli import __version__
+        click.echo(__version__)
+        return
     setup()
 
     files_to_process = get_files_to_process(recursive, file)

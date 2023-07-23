@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "gptask_cli"
-version = "0.1.1"
+version = "0.1.5"
 description = ""
 authors = ["Calum Bird <calum@trelent.net>"]
 readme = "README.md"
