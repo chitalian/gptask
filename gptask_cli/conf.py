@@ -35,7 +35,7 @@ def load_prompts():
 
     return prompts
 
-def reload_example_prompts():
+def run_reload_example_prompts():
     examples_dir = os.path.dirname(os.path.realpath(__file__)) + '/.gptask.example/prompts'
     prompts_dir = os.path.expanduser('~/.gptask/prompts')
     import shutil
