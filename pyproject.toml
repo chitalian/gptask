@@ -1,8 +1,11 @@
 [tool.poetry]
 name = "gptask_cli"
-version = "0.1.5"
+version = "0.1.6"
 description = ""
-authors = ["Calum Bird <calum@trelent.net>"]
+authors = [
+    "Calum Bird <calum@trelent.net>",
+    "Justin Torre <justin@helicone.ai>",
+]
 readme = "README.md"
 
 [tool.poetry.dependencies]
@@ -16,5 +19,5 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
-gptask = "gptask:main"
-run_gptask = "gptask:main"
+gptask = "gptask_cli:main"
+run_gptask = "gptask_cli:main"
