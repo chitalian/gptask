@@ -11,13 +11,30 @@ def check_file_staged_status(file, force):
         return False
     return True
 
-def get_files_to_process(recursive, file):
-    if file:
-        return [file]
-    if recursive:
-        return [open(f, 'r') for f in glob.glob(recursive, recursive=True)]
-    click.echo("Either a file or directory must be provided.")
-    return []
+def _get_path_list(path: str, is_recursive: bool):
+    """
+    Returns a list of paths from a glob pattern, file, or directory to recurse through.
+    """
+    if("*" in path):
+        return glob.glob(path, recursive=True)
+    elif os.path.isfile(path):
+        return [path]
+    elif(path[-1] == "/"):
+        path = path[:-1]
+    
+    # Recurse (or don't) through directory
+    return glob.glob(path + "/**/*" if is_recursive else path + "/*", recursive=True)
+
+def _get_files_from_paths(path_list: list[str]):
+    return [f for f in path_list if os.path.isfile(f)]
+
+def _get_file_list (file_path: str, is_recursive: bool):
+    paths = _get_path_list(file_path, is_recursive)
+    return _get_files_from_paths(paths)
+
+def _get_file_contents_to_process(file_path: str, is_recursive: bool):
+    file_list = _get_file_list(file_path, is_recursive)
+    return [open(f, 'r') for f in file_list]
 
 def get_prompt_contents(prompt, all_prompts):
     if(".gptask" in prompt):
@@ -25,32 +42,27 @@ def get_prompt_contents(prompt, all_prompts):
     else:
         return all_prompts[prompt]
 
-def _print_files(start_path):
-    for root, _, files in os.walk(start_path):
-        for file in files:
-            file_path = os.path.join(root, file)
-            print(f"File Name: {file_path}")
-            with open(file_path, 'r') as f:
-                print(f"File Contents:\n{f.read()}\n")
-
 @click.command()
 @click.version_option()
 @click.option('-p', '--prompt', help='Prompts in ~/.gptask/prompts')
 @click.option('-f', '--force', is_flag=True, help='Force execution even if conditions are not met')
-@click.option('-r', '--recursive', type=click.STRING, help='Directory with files to be processed')
+@click.option('-r', '--recursive', is_flag=True, help='If true and file_path is a directory, files will be recursively prompted instead of just the top level')
 @click.option('-l', '--print-files', is_flag=True, help='Prints the files to be processed')
 @click.option('-a', '--print-prompts', is_flag=True, help='Prints all available prompts')
 @click.option('-g', '--reload-example-prompts', is_flag=True, help='Reloads example prompts')
-@click.argument('file', type=click.File('r'), required=False)
-def main(prompt, force, print_files, recursive, print_prompts,reload_example_prompts, file):
+@click.argument('file_path', type=click.STRING, required=True, help="File, glob pattern, or directory (if using -r flag) to be processed")
+def main(prompt, force, print_files, recursive, print_prompts,reload_example_prompts, file_path):
 
     setup()
     if reload_example_prompts:
         run_reload_example_prompts()
         return
     
-    if print_files and recursive:
-        _print_files(recursive)
+    if print_files:
+        click.echo("Files to be processed:")
+        files_to_print = _get_file_list(file_path, recursive)
+        for file in files_to_print:
+            click.echo(f"  {file}")
         return
 
     all_prompts = load_prompts()
@@ -61,8 +73,9 @@ def main(prompt, force, print_files, recursive, print_prompts,reload_example_pro
             click.echo(f"  {key}")
         return
 
-    files_to_process = get_files_to_process(recursive, file)
-    if not files_to_process:
+    files_to_process = _get_file_contents_to_process(file_path, recursive)
+    if not files_to_process or len(files_to_process) == 0:
+        click.echo(f"No files found for path/pattern/directory: {file_path}")
         return
 
     if not all(check_file_staged_status(f, force) for f in files_to_process):

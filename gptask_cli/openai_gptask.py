@@ -38,6 +38,6 @@ Sure I will just show you the output with my modified changes.
         temperature=0.0,
     )
     
-    res: str= response.choices[0].message.content
+    res: str= response.choices[0].message.content # type: ignore
     res.replace(seperator, '')
     return res
