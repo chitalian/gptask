@@ -29,10 +29,10 @@ gptask -p your_prompt example/
 # Runs on /example/test.py, /example/test2.js, but NOT /example/sub/test.py
 ```
 
-3. To run the gptask on a glob pattern, just specify the pattern in file_path:
+3. To run the gptask on a glob pattern, just specify the pattern in double quotes:
 
 ```bash
-gptask -p your_prompt example/*.py
+gptask -p your_prompt "example/*.py"
 # Runs on /example/test.py but NOT /example/test2.js or /example/sub/test.py
 ```
 
@@ -54,7 +54,7 @@ If a prompt doesn't exist, GPTask will display available prompts.
 For example:
 
 ```bash
-gptask -p non_existent_prompt file
+gptask -p non_existent_prompt example.js
 ```
 
 This will output:
@@ -62,8 +62,8 @@ This will output:
 ```
 Prompt non_existent_prompt not found
 Available prompts:
-  prompt1
-  prompt2
+  doc-reviewer
+  your-prompt
   ...
 ```
 
