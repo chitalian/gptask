@@ -71,11 +71,16 @@ Available prompts:
 
 Contributions are welcomed! Feel free to open an issue or create a pull request.
 
-## License
+Running in development:
 
-This project is licensed under the MIT License.
+```bash
+rm -rf dist
+poetry build
+poetry install
+python3 -m pip install --force-reinstall dist/gptask_cli-*-py3-none-any.whl
+```
 
-Deploy to brew instructions...
+Deployment instructions:
 
 ```bash
 python3 -m pip install homebrew-pypi-poet
@@ -83,6 +88,6 @@ python3 -m pip install gptask_cli
 poet -f gptask_cli # Copy to ruby file
 ```
 
-```
+## License
 
-```
+This project is licensed under the MIT License.

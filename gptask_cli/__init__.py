@@ -28,12 +28,12 @@ def _get_path_list(path: str, is_recursive: bool):
 def _get_files_from_paths(path_list: list[str]):
     return [f for f in path_list if os.path.isfile(f)]
 
-def _get_file_list (file_path: str, is_recursive: bool):
-    paths = _get_path_list(file_path, is_recursive)
+def _get_file_list (pattern: str, is_recursive: bool):
+    paths = _get_path_list(pattern, is_recursive)
     return _get_files_from_paths(paths)
 
-def _get_file_contents_to_process(file_path: str, is_recursive: bool):
-    file_list = _get_file_list(file_path, is_recursive)
+def _get_file_contents_to_process(pattern: str, is_recursive: bool):
+    file_list = _get_file_list(pattern, is_recursive)
     return [open(f, 'r') for f in file_list]
 
 def get_prompt_contents(prompt, all_prompts):
@@ -46,12 +46,12 @@ def get_prompt_contents(prompt, all_prompts):
 @click.version_option()
 @click.option('-p', '--prompt', help='Prompts in ~/.gptask/prompts')
 @click.option('-f', '--force', is_flag=True, help='Force execution even if conditions are not met')
-@click.option('-r', '--recursive', is_flag=True, help='If true and file_path is a directory, files will be recursively prompted instead of just the top level')
+@click.option('-r', '--recursive', is_flag=True, help='If true and pattern is a directory, files will be recursively prompted instead of just the top level')
 @click.option('-l', '--print-files', is_flag=True, help='Prints the files to be processed')
 @click.option('-a', '--print-prompts', is_flag=True, help='Prints all available prompts')
 @click.option('-g', '--reload-example-prompts', is_flag=True, help='Reloads example prompts')
-@click.argument('file_path', type=click.STRING, required=True, help="File, glob pattern, or directory (if using -r flag) to be processed")
-def main(prompt, force, print_files, recursive, print_prompts,reload_example_prompts, file_path):
+@click.argument('pattern', type=click.STRING, required=True)
+def main(prompt, force, print_files, recursive, print_prompts,reload_example_prompts, pattern):
 
     setup()
     if reload_example_prompts:
@@ -60,7 +60,7 @@ def main(prompt, force, print_files, recursive, print_prompts,reload_example_pro
     
     if print_files:
         click.echo("Files to be processed:")
-        files_to_print = _get_file_list(file_path, recursive)
+        files_to_print = _get_file_list(pattern, recursive)
         for file in files_to_print:
             click.echo(f"  {file}")
         return
@@ -73,9 +73,9 @@ def main(prompt, force, print_files, recursive, print_prompts,reload_example_pro
             click.echo(f"  {key}")
         return
 
-    files_to_process = _get_file_contents_to_process(file_path, recursive)
+    files_to_process = _get_file_contents_to_process(pattern, recursive)
     if not files_to_process or len(files_to_process) == 0:
-        click.echo(f"No files found for path/pattern/directory: {file_path}")
+        click.echo(f"No files found for path/pattern/directory: {pattern}")
         return
 
     if not all(check_file_staged_status(f, force) for f in files_to_process):
