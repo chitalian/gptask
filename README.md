@@ -71,7 +71,7 @@ Available prompts:
 
 Contributions are welcomed! Feel free to open an issue or create a pull request.
 
-Running in development:
+Running in development: Run `./scripts/test.sh` or alternatively run:
 
 ```bash
 rm -rf dist
