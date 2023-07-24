@@ -59,3 +59,11 @@ Contributions are welcomed! Feel free to open an issue or create a pull request.
 ## License
 
 This project is licensed under the MIT License.
+
+Deploy to brew instructions...
+
+```bash
+python3 -m pip install homebrew-pypi-poet
+python3 -m pip install gptask_cli
+poet -f gptask_cli # Copy to ruby file
+```
