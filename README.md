@@ -7,7 +7,7 @@ GPTask is a command-line tool to leverage the power of GPT-4 to automatically fo
 Download the package and install using pip:
 
 ```sh
-pip install gptask
+pip install gptask_cli
 ```
 
 ## Usage
